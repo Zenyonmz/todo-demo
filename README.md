@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Today — a small Supabase todo app
 
-## Getting Started
+> Uses Tailwind CSS v4 (CSS-first config via `@theme` in `app/globals.css` —
+> there's no `tailwind.config.ts`). If you ever see an error like *"trying to
+> use tailwindcss directly as a PostCSS plugin"*, it means something in your
+> setup has Tailwind v3 and v4 mixed — check that `package.json` has
+> `tailwindcss` and `@tailwindcss/postcss` on the same v4.x version and that
+> `postcss.config.js` only lists `@tailwindcss/postcss`.
 
-First, run the development server:
+Next.js App Router + Tailwind CSS + `@supabase/supabase-js`. Tasks are read
+in a Server Component; adding, completing, and deleting are all Server
+Actions, so it works with JavaScript disabled and needs no client-side
+Supabase calls.
+
+## 1. Table
+
+This app is wired to a `todos` table (`id`, `task`, `is_complete`,
+`created_at`) with public read/insert/update/delete RLS policies.
+
+- Fresh project: run [`supabase/schema.sql`](./supabase/schema.sql).
+- Already have the table without `is_complete`: run
+  [`supabase/migration_add_complete.sql`](./supabase/migration_add_complete.sql)
+  instead — it adds the column and update policy without touching existing rows.
+
+## 2. Environment variables
+
+`.env.local` should already have your `NEXT_PUBLIC_SUPABASE_URL` and
+`NEXT_PUBLIC_SUPABASE_ANON_KEY` from **Project Settings -> API**. If you're
+setting this up fresh elsewhere:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.local.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 3. Install and run
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open http://localhost:3000.
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+  actions.ts       Server Actions: addTask, deleteTask, toggleTask
+  layout.tsx        Root layout, loads fonts
+  page.tsx          Server Component — fetches todos from Supabase
+  globals.css
+components/
+  AddTaskForm.tsx    Form bound to the addTask action
+  TaskRow.tsx         One task: toggle-complete + delete forms
+lib/
+  supabase/server.ts  Supabase client for server-side use only
+  types.ts
+supabase/
+  schema.sql          Table + RLS policies
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `revalidatePath("/")` in each Server Action re-runs the Server Component's
+  data fetch after a mutation, so the list stays in sync without any client
+  state or `useEffect`.
+- The Supabase client in `lib/supabase/server.ts` uses the public anon key
+  and is only ever imported from Server Components/Actions — it's never sent
+  to the browser bundle.
+- Delete and complete controls are plain `<form action={...}>` elements, so
+  they work even before hydration finishes.
