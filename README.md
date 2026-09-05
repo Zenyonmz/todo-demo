@@ -1,15 +1,15 @@
-# ✅ Today — A Supabase Todo App
+# ✅ Today - A Supabase Todo App
 
-A small, focused todo app built with Next.js App Router, Tailwind CSS, and Supabase — no client-side data fetching, no `useState` for your data. Reads happen in a Server Component, writes happen through Server Actions.
+A small, focused todo app built with Next.js App Router, Tailwind CSS, and Supabase - no client-side data fetching, no `useState` for your data. Reads happen in a Server Component, writes happen through Server Actions.
 
 ## ✨ Features
 
-- 📝 **Add, complete, delete** — a clean daily task list backed by a real Postgres database
-- 🎨 **Modern, minimal UI** — warm paper background, serif heading, styled with Tailwind CSS
-- ⚡ **Server-first** — tasks are fetched in a Server Component; no API routes, no client-side Supabase calls
-- 🔄 **Works without JavaScript** — add/complete/delete are plain HTML forms bound to Server Actions
-- 🔒 **Secure by default** — Supabase URL/key live in environment variables, never bundled into client code paths that need them
-- 🚀 **Easy deployment** — deploys to Vercel in a few clicks
+- 📝 **Add, complete, delete** - a clean daily task list backed by a real Postgres database
+- 🎨 **Modern, minimal UI** - warm paper background, serif heading, styled with Tailwind CSS
+- ⚡ **Server-first** - tasks are fetched in a Server Component; no API routes, no client-side Supabase calls
+- 🔄 **Works without JavaScript** - add/complete/delete are plain HTML forms bound to Server Actions
+- 🔒 **Secure by default** - Supabase URL/key live in environment variables, never bundled into client code paths that need them
+- 🚀 **Easy deployment** - deploys to Vercel in a few clicks
 
 ## 🎬 Demo
 
@@ -68,7 +68,7 @@ npm run dev
 1. Type a task into the **New task** field and click **Add**
 2. Click the circle next to a task to mark it complete
 3. Hover over a task and click the **×** to delete it
-4. Every action writes straight to your Supabase `todos` table — check the Table Editor to see it update live
+4. Every action writes straight to your Supabase `todos` table - check the Table Editor to see it update live
 
 ## 📁 Project Structure
 
@@ -77,7 +77,7 @@ todo-app/
 ├── app/
 │   ├── actions.ts          # Server Actions: addTask, deleteTask, toggleTask
 │   ├── layout.tsx          # Root layout, loads fonts
-│   ├── page.tsx            # Server Component — fetches todos from Supabase
+│   ├── page.tsx            # Server Component - fetches todos from Supabase
 │   └── globals.css         # Tailwind v4 theme + base styles
 ├── components/
 │   ├── AddTaskForm.tsx     # Form bound to the addTask action
@@ -120,8 +120,8 @@ MIT License
 
 ## 🙏 Acknowledgments
 
-- [Next.js](https://nextjs.org) — React framework
-- [Supabase](https://supabase.com) — Postgres database & auth
-- [Tailwind CSS](https://tailwindcss.com) — CSS framework
+- [Next.js](https://nextjs.org) - React framework
+- [Supabase](https://supabase.com) - Postgres database & auth
+- [Tailwind CSS](https://tailwindcss.com) - CSS framework
 
 ⭐ Star this project if you find it helpful!
